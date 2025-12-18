@@ -1,0 +1,42 @@
+# Netlify configuration file
+# Configured for subdirectory access at lavis.work/nubankcase
+
+[build]
+  publish = "."
+
+# Force HTTPS - redirect all HTTP traffic to HTTPS
+[[redirects]]
+  from = "http://nubankcase.lavis.work/*"
+  to = "https://nubankcase.lavis.work/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://nubankcase.netlify.app/*"
+  to = "https://nubankcase.netlify.app/:splat"
+  status = 301
+  force = true
+
+# Handle SPA routing - redirect all routes to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet, noimageindex"
+
+# Base path configuration for subdirectory hosting
+# This ensures assets load correctly when served from /nubankcase
+[build.environment]
+  NODE_VERSION = "18"
+
